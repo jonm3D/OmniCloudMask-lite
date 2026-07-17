@@ -1,7 +1,0 @@
-# Generated at build time from repo root files
-changelog.md
-model-changelog.md
-docker.md
-
-# Sphinx build output
-_build/
