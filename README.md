@@ -1,70 +1,34 @@
-# OmniCloudMask
-[![image](https://img.shields.io/pypi/v/omnicloudmask.svg)](https://pypi.python.org/pypi/omnicloudmask)
-[![image](https://static.pepy.tech/badge/omnicloudmask)](https://pepy.tech/project/omnicloudmask)
-[![image](https://img.shields.io/conda/vn/conda-forge/omnicloudmask.svg)](https://anaconda.org/conda-forge/omnicloudmask)
-[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/omnicloudmask.svg)](https://anaconda.org/conda-forge/omnicloudmask)
-[![image](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Documentation](https://readthedocs.org/projects/omnicloudmask/badge/?version=latest)](https://omnicloudmask.readthedocs.io/)
+# OmniCloudMask-lite
 
-State-of-the-art cloud and cloud shadow segmentation for high to moderate resolution satellite imagery.
+This is the deliberately narrow OmniCloudMask v4 inference runtime vendored for
+`multimethod-sdb`. It accepts only an explicit Red/Green/NIR NumPy array and an
+explicit validity mask. Geospatial I/O, sensor adapters, QA composition, and
+pipeline orchestration belong to the parent project.
 
-Works with any imagery containing Red, Green, and NIR bands at 10-50 m resolution (and down to 5 m with recent model versions). Validated on Sentinel-2, Landsat 8, PlanetScope and Maxar imagery. See [choosing a resolution](https://omnicloudmask.readthedocs.io/en/latest/resolution.html) for guidance on picking the right resolution for your data.
+The model ensemble and Hugging Face revision are immutable in
+`omnicloudmask_lite/model_manifest.json`. Class values are:
 
-![OmniCloudMask example](https://raw.githubusercontent.com/DPIRD-DMA/OmniCloudMask/main/docs/_static/example.png)
+| Value | Meaning |
+|---:|---|
+| 0 | clear |
+| 1 | thick cloud |
+| 2 | thin cloud |
+| 3 | cloud shadow |
+| 255 | invalid / not inferred |
 
-[Documentation](https://omnicloudmask.readthedocs.io/) | [Paper](https://www.sciencedirect.com/science/article/pii/S0034425725000987) | [Training Data Map](https://dpird-dma.github.io/OCM-training-data-map/) | [Podcast](https://www.satellite-image-deep-learning.com/p/omnicloudmask)
+## Commands
 
-## Installation
-
-```bash
-pip install omnicloudmask
+```console
+uv sync --frozen
+uv run omnicloudmask-lite fetch-model --model-dir .models/ocm-v4
+uv run omnicloudmask-lite infer \
+  --input rgn.npy --valid-mask valid.npy --output classes.npy \
+  --model-dir .models/ocm-v4 --device auto --dtype fp32 \
+  --patch-size 1000 --patch-overlap 300 --batch-size 1
 ```
 
-Or with [uv](https://docs.astral.sh/uv/), conda, or from source—see [installation docs](https://omnicloudmask.readthedocs.io/en/latest/installation.html).
+The `infer` command writes a `uint8` class array and an adjacent JSON record.
+Inputs are never interpreted as rasters and are never modified.
 
-## Quick Start
-
-```python
-import numpy as np
-from omnicloudmask import predict_from_array
-
-# Input: (3, height, width) array with Red, Green, NIR bands
-input_array = np.random.rand(3, 1024, 1024).astype(np.float32)
-
-# Output: (1, height, width) mask
-# Values: 0=Clear, 1=Thick Cloud, 2=Thin Cloud, 3=Cloud Shadow
-mask = predict_from_array(input_array)
-```
-
-For a Sentinel-2 scene:
-
-```python
-from pathlib import Path
-from omnicloudmask import predict_from_load_func, load_s2
-
-scene_paths = [Path("path/to/scene.SAFE")]
-pred_paths = predict_from_load_func(scene_paths, load_s2)
-```
-
-See the [quickstart guide](https://omnicloudmask.readthedocs.io/en/latest/quickstart.html) for more examples.
-
-## Example Notebooks
-
-- [Sentinel-2 from .SAFE](https://github.com/DPIRD-DMA/OmniCloudMask/blob/main/examples/sentinel2_safe.ipynb)
-- [Sentinel-2 via Planetary Computer](https://github.com/DPIRD-DMA/OmniCloudMask/blob/main/examples/sentinel2_planetary_computer.ipynb)
-- [HLS (Harmonized Landsat Sentinel)](https://github.com/DPIRD-DMA/OmniCloudMask/blob/main/examples/hls.ipynb)
-- [PlanetScope](https://github.com/DPIRD-DMA/OmniCloudMask/blob/main/examples/planetscope.ipynb)
-- [PlanetScope Hyperspectral](https://github.com/DPIRD-DMA/OmniCloudMask/blob/main/examples/planetscope_hyperspectral.ipynb)
-- [Maxar](https://github.com/DPIRD-DMA/OmniCloudMask/blob/main/examples/maxar.ipynb)
-
-## Try in Colab
-
-[![Open In Colab](https://img.shields.io/badge/Try%20in%20Colab-grey?style=for-the-badge&logo=google-colab)](https://colab.research.google.com/drive/1d53lg2yiSbqhrzDWlJoS5rjHgRLRJ3WY?usp=sharing)
-
-## How it works
-
-[![Sensor agnostic Deep Learning with OmniCloudMask](http://img.youtube.com/vi/eoKctlbsoMs/0.jpg)](http://www.youtube.com/watch?v=eoKctlbsoMs "Sensor agnostic Deep Learning with OmniCloudMask")
-
-## License
-
-MIT License
+The original project is Copyright (c) 2022 Nick Wright and is distributed under
+the MIT license retained in this repository.

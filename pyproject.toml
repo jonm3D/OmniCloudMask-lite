@@ -1,73 +1,43 @@
 [build-system]
-requires = ["setuptools >= 61.0"]
+requires = ["setuptools>=75"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "omnicloudmask"
-authors = [{name = "Nick Wright", email = "nicholas.wright@dpird.wa.gov.au"}]
-dynamic = ["version"]
-description = "Python library for cloud and cloud shadow segmentation in high to moderate resolution satellite imagery"
-requires-python = ">=3.9"
-dependencies = [
-    "gdown>=5.1.0",
-    "huggingface-hub>=0.28.1",
-    "platformdirs>=4.0.0",
-    "rasterio>=1.3",
-    "safetensors>=0.3.0",
-    "segmentation-models-pytorch>=0.5.0",
-    "timm>=0.9",
-    "torch>=2.3.0",
-    "tqdm>=4.0",
-]
+name = "omnicloudmask-lite"
+version = "0.1.0"
+description = "Pinned OmniCloudMask v4 array inference runtime for multimethod-sdb"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
 license = "MIT"
-readme = {file = "README.md", content-type = "text/markdown"}
-keywords = ["sentinel-2", "landsat", "maxar", "planetscope", "satellite", "cloud", "remote-sensing", "mask", "shadow"]
+authors = [
+  {name = "Nick Wright", email = "nicholas.wright@dpird.wa.gov.au"},
+  {name = "multimethod-sdb maintainers"},
+]
+dependencies = [
+  "numpy>=2.0",
+  "safetensors>=0.5",
+  "segmentation-models-pytorch>=0.5",
+  "timm>=1.0",
+  "torch>=2.6",
+]
 
-[tool.setuptools.dynamic]
-version = {attr = "omnicloudmask.__version__.__version__"}
+[project.scripts]
+omnicloudmask-lite = "omnicloudmask_lite.cli:main"
 
 [dependency-groups]
 dev = [
-    "cubo>=2024.1.1",
-    "earthaccess>=0.11.0",
-    "fastai>=2.7",
-    "geopandas>=1.0.1",
-    "h5py>=3.14.0",
-    "jupyter>=1.1.1",
-    "line-profiler>=5.0.0",
-    "matplotlib>=3.0.0",
-    "myst-parser>=3.0.1",
-    "netcdf4>=1.7.2",
-    "opencv-python>=4.12.0.88",
-    "planetary-computer>=1.0.0",
-    "pystac>=1.10.1",
-    "pystac-client>=0.8.3",
-    "pytest>=8.4.0",
-    "rioxarray>=0.15.0",
-    "ruff>=0.12.2",
-    "s2dl>=0.3",
-    "seaborn>=0.13.0",
-    "spandrel>=0.4.1",
-    "sphinx>=7.4.7",
-    "sphinx-autobuild>=2024.10.3",
-    "sphinx-rtd-theme>=3.1.0",
-    "tacoreader>=0.5.6",
+  "pytest>=8.3",
+  "ruff>=0.11",
 ]
 
-[project.optional-dependencies]
-legacy = ["fastai>=2.7",]
-
-[project.urls]
-Homepage = "https://github.com/DPIRD-DMA/OmniCloudMask"
+[tool.setuptools]
+packages = ["omnicloudmask_lite"]
 
 [tool.setuptools.package-data]
-omnicloudmask = ["model_download_links.csv"]
-
-[tool.setuptools]
-packages = ["omnicloudmask"]
-
-[tool.ruff.lint]
-select = ["E", "F", "B"]
+omnicloudmask_lite = ["model_manifest.json"]
 
 [tool.ruff]
-exclude = ["training/Train OCM models.ipynb"]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I"]

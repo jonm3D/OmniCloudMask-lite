@@ -1,30 +1,11 @@
-maxar data/
-omnicloudmask/__pycache__
-omnicloudmask/models/*PT.pth
-test data/
-Sentinel-2 data/
-build/*
-omnicloudmask.egg-info/*
-dist/*
-Maxar data/*
+.venv/
+.models/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
 .coverage
-tests/__pycache__/*
-*.tif.aux.xml
-validation dataset/Sentinel-2/dataset/*
-validation dataset/Landsat/dataset/*
-validation dataset/PlanetScope/dataset*
-tests/custom_models/*
-omnicloudmask/models/.*
-omnicloudmask/models/models--NickWright--OmniCloudMask/*
-training/convert models.ipynb
-custom_models/*
-*.DS_Store
-omnicloudmask/models/*.safetensors
-training/__pycache__/*
-omnicloudmask/models/*_PT_state.pth
-examples/Maxar data/*
-examples/PlanetScope data/*
-tests/speed test/speed test scenes/*
-*.pyc
-validation dataset/Throughput/speed test scenes/*
-uv.lock
+.DS_Store
