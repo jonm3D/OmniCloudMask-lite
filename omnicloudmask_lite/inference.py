@@ -105,9 +105,7 @@ def predict(
     if not np.any(valid):
         return output
 
-    patch_size, patch_overlap = _effective_patch(
-        valid.shape, patch_size, patch_overlap
-    )
+    patch_size, patch_overlap = _effective_patch(valid.shape, patch_size, patch_overlap)
     indexes = [
         index
         for index in _patch_indexes(*valid.shape, patch_size, patch_overlap)

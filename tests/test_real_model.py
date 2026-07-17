@@ -16,9 +16,7 @@ def test_pinned_v4_ensemble_regression() -> None:
     if not model_dir:
         pytest.skip("set OCM_MODEL_DIR to run the pinned-weight regression")
     y, x = np.mgrid[:96, :96]
-    rgn = np.stack(((x + 1) / 97, (y + 1) / 97, ((x + y) % 31) / 31)).astype(
-        np.float32
-    )
+    rgn = np.stack(((x + 1) / 97, (y + 1) / 97, ((x + y) % 31) / 31)).astype(np.float32)
     valid = np.ones((96, 96), dtype=np.uint8)
     valid[:4, :] = 0
     valid[:, :3] = 0
@@ -36,8 +34,7 @@ def test_pinned_v4_ensemble_regression() -> None:
         "50f4df3244e6731764c882014d59aea69050f244c10ad8de8bb6d8b0538755f1"
     )
     counts = {
-        value: int(np.count_nonzero(classes == value))
-        for value in (0, 1, 2, 3, 255)
+        value: int(np.count_nonzero(classes == value)) for value in (0, 1, 2, 3, 255)
     }
     assert counts == {
         0: 843,
