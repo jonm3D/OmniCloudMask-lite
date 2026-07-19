@@ -1,5 +1,10 @@
 # OmniCloudMask-lite
 
+> **Parent-project users:** run setup and imagery work from `multimethod-sdb`. The
+> parent project creates this runtime, gets the model, prepares red/green/NIR input,
+> restores the source grid, and builds QA. Use the commands below only to test or
+> maintain OmniCloudMask-lite itself.
+
 This is the deliberately narrow OmniCloudMask v4 inference runtime vendored for
 `multimethod-sdb`. It accepts only an explicit Red/Green/NIR NumPy array and an
 explicit validity mask. Geospatial I/O, sensor adapters, QA composition, and
@@ -30,5 +35,4 @@ uv run omnicloudmask-lite infer \
 The `infer` command writes a `uint8` class array and an adjacent JSON record.
 Inputs are never interpreted as rasters and are never modified.
 
-The original project is Copyright (c) 2022 Nick Wright and is distributed under
-the MIT license retained in this repository.
+Nick Wright holds the 2022 copyright. This repository keeps the MIT license.
